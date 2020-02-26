@@ -1,4 +1,4 @@
-package com.ebookfrenzy.quoteclient.ui.dashboard;
+package com.ebookfrenzy.quoteclient.controller;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
