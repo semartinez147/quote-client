@@ -2,6 +2,7 @@ package com.ebookfrenzy.quoteclient.service;
 
 import com.ebookfrenzy.quoteclient.BuildConfig;
 import com.ebookfrenzy.quoteclient.model.Quote;
+import com.ebookfrenzy.quoteclient.model.Source;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.reactivex.Single;
@@ -13,8 +14,11 @@ import okhttp3.logging.HttpLoggingInterceptor.Level;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface QodService {
 
@@ -23,6 +27,12 @@ public interface QodService {
 
   @GET("quotes")
   Single<List<Quote>> getAll(@Header("Authorization") String oauthHeader);
+
+  @GET("sources")
+  Single<List<Source>> getAllSources(@Header("Authorization") String oauthHeader, @Query("includeNull")boolean includeNull);
+
+  @POST("quotes")
+  Single<Quote> post(@Header("Authorization") String oauthHeader, @Body Quote quote);
 
   static QodService getInstance() {
     return InstanceHolder.INSTANCE;

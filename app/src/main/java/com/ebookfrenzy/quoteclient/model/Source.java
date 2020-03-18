@@ -1,11 +1,11 @@
 package com.ebookfrenzy.quoteclient.model;
 
 import com.google.gson.annotations.Expose;
-import java.net.URL;
 import java.util.Date;
 import java.util.UUID;
+import retrofit2.http.Url;
 
-public class Quote {
+public class Source {
 
   @Expose
   private UUID id;
@@ -17,12 +17,13 @@ public class Quote {
   private Date updated;
 
   @Expose
-  private String text;
+  private String name;
 
   @Expose
-  private URL href;
+  private Quote[] quotes;
 
-  private Source source;
+  @Expose
+  private Url href;
 
   public UUID getId() {
     return id;
@@ -48,27 +49,27 @@ public class Quote {
     this.updated = updated;
   }
 
-  public String getText() {
-    return text;
+  public String getName() {
+    return name;
   }
 
-  public void setText(String text) {
-    this.text = text;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public Source getSource() {
-    return source;
+  public Quote[] getQuotes() {
+    return quotes;
   }
 
-  public void setSource(Source source) {
-    this.source = source;
+  public void setQuotes(Quote[] quotes) {
+    this.quotes = quotes;
   }
 
-  public URL getHref() {
+  public Url getHref() {
     return href;
   }
 
-  public void setHref(URL href) {
+  public void setHref(Url href) {
     this.href = href;
   }
 }
