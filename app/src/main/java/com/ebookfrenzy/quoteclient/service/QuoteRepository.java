@@ -1,9 +1,12 @@
 package com.ebookfrenzy.quoteclient.service;
 
+import com.ebookfrenzy.quoteclient.model.Content;
 import com.ebookfrenzy.quoteclient.model.Quote;
 import com.ebookfrenzy.quoteclient.model.Source;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -45,8 +48,23 @@ public class QuoteRepository {
         .subscribeOn(Schedulers.from(networkPool));
   }
 
+  public Single<List<Content>> getAllContent(String token) {
+    return getAllSources(token, true)
+        .subscribeOn(Schedulers.io())
+        .map((sources) -> {
+          List<Content> combined = new ArrayList<>();
+          for (Source source : sources) {
+            combined.add(source);
+            Collections.addAll(combined, source.getQuotes());
+          }
+          return combined;
+        });
+  }
+
   private static class InstanceHolder {
 
     private static final QuoteRepository INSTANCE = new QuoteRepository();
+
   }
+
 }

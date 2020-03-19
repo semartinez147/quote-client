@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.ebookfrenzy.quoteclient.R;
 import com.ebookfrenzy.quoteclient.model.Quote;
 import com.ebookfrenzy.quoteclient.view.QuoteRecyclerAdapter.Holder;
@@ -71,10 +70,9 @@ public class QuoteRecyclerAdapter extends RecyclerView.Adapter<Holder> {
 
     private void bind(int position, Quote quote) {
       quoteText.setText(quote.getText());
-      quoteSource.setText((quote.getSource() != null) ? quote.getSource().getName() : context.getString(
-                R.string.unattributed_source));
-
-      // TODO set any event listeners
+      quoteSource.setText((quote.getSource() != null)
+          ? quote.getSource().getName() : context.getString(R.string.unattributed_source));
+      // TODO Set any event listeners.
     }
 
   }

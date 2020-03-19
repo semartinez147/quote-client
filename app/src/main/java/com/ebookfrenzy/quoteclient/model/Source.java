@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 import retrofit2.http.Url;
 
-public class Source {
+public class Source implements Content {
 
   @Expose
   private UUID id;

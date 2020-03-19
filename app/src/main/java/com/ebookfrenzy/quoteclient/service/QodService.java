@@ -44,9 +44,9 @@ public interface QodService {
     private static final String TIMESTAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     static {
-      Gson gson = new GsonBuilder()
-          .excludeFieldsWithoutExposeAnnotation()
+      Gson gson  = new GsonBuilder()
           .setDateFormat(TIMESTAMP_FORMAT)
+          .excludeFieldsWithoutExposeAnnotation()
           .create();
       HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
       interceptor.setLevel(Level.BODY);
@@ -63,6 +63,6 @@ public interface QodService {
       INSTANCE = retrofit.create(QodService.class);
     }
 
-
   }
+
 }

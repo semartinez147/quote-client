@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
+import com.ebookfrenzy.quoteclient.model.Content;
 import com.ebookfrenzy.quoteclient.model.Quote;
 import com.ebookfrenzy.quoteclient.service.GoogleSignInService;
 import com.ebookfrenzy.quoteclient.service.QuoteRepository;
@@ -17,6 +18,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
 
   private MutableLiveData<Quote> quote;
   private MutableLiveData<List<Quote>> quotes;
+  private MutableLiveData<List<Content>> contents;
   private final MutableLiveData<Throwable> throwable;
   private final QuoteRepository repository;
   private CompositeDisposable pending;
@@ -26,7 +28,9 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
     pending = new CompositeDisposable();
     quote = new MutableLiveData<>();
     quotes = new MutableLiveData<>();
+    contents = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
+    refreshRandom();
   }
 
   public LiveData<Quote> getQuote() {
@@ -37,6 +41,10 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
     return quotes;
   }
 
+  public LiveData<List<Content>> getContents() {
+    return contents;
+  }
+
   public LiveData<Throwable> getThrowable() {
     return throwable;
   }
@@ -44,10 +52,6 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
   public void refreshRandom() {
     GoogleSignInService.getInstance().refresh()
         .addOnSuccessListener((account) -> {
-          Log.d(getClass().getName(), account.getDisplayName());
-          Log.d(getClass().getName(), account.getIdToken());
-          Log.d(getClass().getName(), account.getEmail());
-          Log.d(getClass().getName(), account.getId());
           pending.add(
               repository.getRandom(account.getIdToken())
                   .subscribe(
@@ -66,6 +70,20 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
               repository.getAllQuotes(account.getIdToken())
                   .subscribe(
                       quotes::postValue,
+                      throwable::postValue
+                  )
+          );
+        })
+        .addOnFailureListener(throwable::postValue);
+  }
+
+  public void refreshContents() {
+    GoogleSignInService.getInstance().refresh()
+        .addOnSuccessListener((account) -> {
+          pending.add(
+              repository.getAllContent(account.getIdToken())
+                  .subscribe(
+                      contents::postValue,
                       throwable::postValue
                   )
           );
